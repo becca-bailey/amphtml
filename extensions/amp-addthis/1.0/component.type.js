@@ -5,7 +5,13 @@ var BentoAddthisDef = {};
 
 /**
  * @typedef {{
- *   exampleProperty: (string|undefined), (DO NOT SUBMIT)
+ *  description: (string|undefined),
+ *  media: (string|undefined),
+ *  pubId: (string),
+ *  title: (string|undefined),
+ *  url: (string|undefined),
+ *  widgetId: (string),
+ *  widgetType: (string),
  * }}
  */
 BentoAddthisDef.Props;
