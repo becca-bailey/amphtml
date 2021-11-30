@@ -126,6 +126,15 @@
     }
   },
   {
+    "name": "amp-addthis",
+    "version": "1.0",
+    "latestVersion": "0.1",
+    "options": {
+      "hasCss": true,
+      "bento": true
+    }
+  },
+  {
     "name": "amp-analytics",
     "version": "0.1",
     "latestVersion": "0.1"
