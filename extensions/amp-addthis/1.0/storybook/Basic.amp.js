@@ -8,16 +8,18 @@ export default {
     extensions: [{name: 'amp-addthis', version: '1.0'}],
     experiments: ['bento'],
   },
-  args: {
-    'data-example-property': 'example string property argument',
-  },
+  args: {},
 };
 
-// DO NOT SUBMIT: This is example code only.
 export const _default = (args) => {
   return (
-    <amp-addthis width="300" height="200" {...args}>
-      This text is inside.
-    </amp-addthis>
+    <amp-addthis
+      width="320"
+      height="92"
+      data-pub-id="ra-5c191331410932ff"
+      data-widget-id="957l"
+      data-widget-type="floating"
+      {...args}
+    ></amp-addthis>
   );
 };
