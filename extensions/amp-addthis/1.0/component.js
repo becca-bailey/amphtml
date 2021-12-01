@@ -1,7 +1,15 @@
 import * as Preact from '#preact';
-import {useMemo} from '#preact';
+import {useCallback, useMemo, useState} from '#preact';
 import {forwardRef} from '#preact/compat';
-import {ProxyIframeEmbed} from '#preact/component/3p-frame';
+import {IframeEmbed} from '#preact/component/iframe';
+
+const MATCHES_MESSAGING_ORIGIN = (origin) =>
+  origin === 'https://s7.addthis.com';
+
+/**
+ * @const {string}
+ */
+const ORIGIN = 'https://s7.addthis.com';
 
 /**
  * @param {!BentoAddthis.Props} props
@@ -9,9 +17,26 @@ import {ProxyIframeEmbed} from '#preact/component/3p-frame';
  * @return {PreactDef.Renderable}
  */
 export function BentoAddthisWithRef(
-  {description, media, pubId, title, url, widgetId, widgetType, ...rest},
+  {
+    description,
+    media,
+    onLoad,
+    pubId,
+    style,
+    title,
+    url,
+    widgetId,
+    widgetType,
+    ...rest
+  },
   ref
 ) {
+  const [height, setHeight] = useState(null);
+
+  const messageHandler = useCallback((event) => {
+    console.log(event);
+  }, []);
+
   // Check for valid props
   if (!checkProps(widgetId)) {
     displayWarning('widgetId prop is required for BentoAddthis');
@@ -23,18 +48,20 @@ export function BentoAddthisWithRef(
     displayWarning('widgetType prop is required for BentoAddthis');
   }
 
-  const options = useMemo(() => {
-    return {
-      url,
-    };
-  }, [url]);
+  // TODO: Update src
+  const src = useMemo(() => {
+    return `${ORIGIN}/js/300/addthis_widget.js#pubid=${pubId}`;
+  }, [pubId]);
 
   return (
-    <ProxyIframeEmbed
-      options={options}
+    <IframeEmbed
+      matchesMessagingOrigin={MATCHES_MESSAGING_ORIGIN}
       ref={ref}
       title={title || 'AddThis'}
-      type="addthis"
+      messageHandler={messageHandler}
+      style={height ? {...style, height} : style}
+      src={src}
+      id={widgetId}
       {...rest}
     />
   );

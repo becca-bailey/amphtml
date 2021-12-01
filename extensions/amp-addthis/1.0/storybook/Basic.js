@@ -5,15 +5,17 @@ export default {
   title: 'Addthis',
   component: BentoAddthis,
   args: {
-    'exampleProperty': 'example string property argument',
+    widgetType: 'floating',
   },
 };
 
-// DO NOT SUBMIT: This is example code only.
 export const _default = (args) => {
   return (
-    <BentoAddthis style={{width: 300, height: 200}} {...args}>
-      This text is inside.
-    </BentoAddthis>
+    <BentoAddthis
+      style={{width: 320, height: 92}}
+      pubId="ra-5c191331410932ff"
+      widgetId="9571"
+      {...args}
+    ></BentoAddthis>
   );
 };
