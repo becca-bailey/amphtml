@@ -3,13 +3,8 @@ import {useCallback, useMemo, useState} from '#preact';
 import {forwardRef} from '#preact/compat';
 import {IframeEmbed} from '#preact/component/iframe';
 
-const MATCHES_MESSAGING_ORIGIN = (origin) =>
-  origin === 'https://s7.addthis.com';
-
-/**
- * @const {string}
- */
 const ORIGIN = 'https://s7.addthis.com';
+const MATCHES_MESSAGING_ORIGIN = (origin) => origin === ORIGIN;
 
 /**
  * @param {!BentoAddthis.Props} props
@@ -17,18 +12,7 @@ const ORIGIN = 'https://s7.addthis.com';
  * @return {PreactDef.Renderable}
  */
 export function BentoAddthisWithRef(
-  {
-    description,
-    media,
-    onLoad,
-    pubId,
-    style,
-    title,
-    url,
-    widgetId,
-    widgetType,
-    ...rest
-  },
+  {description, media, pubId, style, title, widgetId, widgetType, ...rest},
   ref
 ) {
   const [height, setHeight] = useState(null);
