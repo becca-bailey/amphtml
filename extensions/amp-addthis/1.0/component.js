@@ -1,7 +1,7 @@
 import * as Preact from '#preact';
 import {useCallback, useMemo, useState} from '#preact';
 import {forwardRef} from '#preact/compat';
-import {IframeEmbed} from '#preact/component/iframe';
+import {ProxyIframeEmbed} from '#preact/component/3p-frame';
 
 const ORIGIN = 'https://s7.addthis.com';
 const MATCHES_MESSAGING_ORIGIN = (origin) => origin === ORIGIN;
@@ -38,7 +38,7 @@ export function BentoAddthisWithRef(
   }, [pubId]);
 
   return (
-    <IframeEmbed
+    <ProxyIframeEmbed
       matchesMessagingOrigin={MATCHES_MESSAGING_ORIGIN}
       ref={ref}
       title={title || 'AddThis'}
