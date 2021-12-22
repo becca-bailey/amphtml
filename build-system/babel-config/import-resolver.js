@@ -47,7 +47,11 @@ function readJsconfigPaths() {
 function getImportResolver() {
   return {
     root: ['.'],
-    alias: readJsconfigPaths(),
+    alias: {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+      ...readJsconfigPaths(),
+    },
     babelOptions: {
       caller: {
         name: 'import-resolver',
