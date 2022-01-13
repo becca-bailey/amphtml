@@ -144,6 +144,7 @@ const forbiddenTermsGlobal = {
       'build-system/compile/build-compiler.js',
       'build-system/compile/build-constants.js',
       'src/core/mode/esm.js',
+      'src/core/mode/globals.d.ts',
       'src/core/mode/minified.js',
       'src/core/mode/prod.js',
       'src/core/mode/version.js',
@@ -588,8 +589,6 @@ const forbiddenTermsGlobal = {
   '/\\*\\* @type \\{\\!Element\\} \\*/': {
     message: 'Use assertElement instead of casting to !Element.',
     allowlist: [
-      'src/core/assert/base.js', // Has actual implementation of assertElement.
-      'src/core/assert/dev.js', // Has actual implementation of assertElement.
       'src/polyfills/custom-elements.js',
       'ads/google/ima/ima-video.js', // Required until #22277 is fixed.
       '3p/twitter.js', // Runs in a 3p window context, so cannot import log.js.
@@ -609,10 +608,7 @@ const forbiddenTermsGlobal = {
   '\\b(__)?AMP_EXP\\b': {
     message:
       'Do not access AMP_EXP directly. Use isExperimentOn() to access config',
-    allowlist: [
-      'src/experiments/index.js',
-      'src/experiments/experiments.extern.js',
-    ],
+    allowlist: ['src/experiments/index.js', 'src/experiments/amp-globals.d.ts'],
   },
   'AMP_CONFIG': {
     message:
@@ -634,7 +630,6 @@ const forbiddenTermsGlobal = {
       'build-system/tasks/dist.js',
       'src/config.js',
       'src/experiments/index.js',
-      'src/experiments/shame.extern.js',
       'src/mode.js',
       'src/core/mode/test.js',
       'src/core/mode/local-dev.js',

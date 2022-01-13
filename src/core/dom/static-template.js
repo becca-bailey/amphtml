@@ -1,7 +1,10 @@
 import {devAssert} from '#core/assert';
 import {map} from '#core/types/object';
 
+/** @type {HTMLElement} */
 let htmlContainer;
+
+/** @type {SVGSVGElement} */
 let svgContainer;
 
 /**
@@ -27,7 +30,7 @@ export function htmlFor(nodeOrDoc) {
  */
 export function svgFor(nodeOrDoc) {
   const doc = nodeOrDoc.ownerDocument || /** @type {Document} */ (nodeOrDoc);
-  if (!svgContainer || svgContainer.ownerDocument !== svgContainer) {
+  if (!svgContainer || svgContainer.ownerDocument !== doc) {
     svgContainer = doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
   }
 
@@ -72,7 +75,7 @@ function html(strings) {
 
 /**
  * Helper used by html and svg string literal functions.
- * @param {HTMLElement} container
+ * @param {HTMLElement | SVGSVGElement} container
  * @param {readonly string[]} strings
  * @return {HTMLElement}
  */
@@ -104,7 +107,8 @@ export function htmlRefs(root) {
 
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
-    const ref = devAssert(element.getAttribute('ref'), 'Empty ref attr');
+    const ref = element.getAttribute('ref');
+    devAssert(ref, 'Empty ref attr');
     element.removeAttribute('ref');
     devAssert(refs[ref] === undefined, 'Duplicate ref');
     refs[ref] = element;

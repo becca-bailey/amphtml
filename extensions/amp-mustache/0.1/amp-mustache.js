@@ -1,12 +1,15 @@
-import {BaseTemplate} from '../../../src/base-template';
-import {dict} from '#core/types/object';
 import {iterateCursor, templateContentClone} from '#core/dom';
+import {dict} from '#core/types/object';
+
+import {user} from '#utils/log';
+
+import mustache from '#third_party/mustache/mustache';
+
+import {BaseTemplate} from '../../../src/base-template';
 import {
   sanitizeHtml,
   sanitizeTagsForTripleMustache,
 } from '../../../src/sanitizer';
-import {user} from '#utils/log';
-import mustache from '#third_party/mustache/mustache';
 
 const TAG = 'amp-mustache';
 
@@ -25,7 +28,9 @@ export class AmpMustache extends BaseTemplate {
     super(element, win);
 
     // Unescaped templating (triple mustache) has a special, strict sanitizer.
-    mustache.setUnescapedSanitizer(sanitizeTagsForTripleMustache);
+    mustache.setUnescapedSanitizer((html) =>
+      sanitizeTagsForTripleMustache(html, this.win.document)
+    );
 
     user().warn(
       TAG,

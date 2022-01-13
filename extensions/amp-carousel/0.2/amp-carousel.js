@@ -1,22 +1,26 @@
-import {ActionSource} from '../../amp-base-carousel/0.1/action-source';
 import {ActionTrust_Enum} from '#core/constants/action-constants';
-import {CSS} from '../../../build/amp-carousel-0.2.css';
-import {Carousel} from '../../amp-base-carousel/0.1/carousel';
-import {CarouselEvents} from '../../amp-base-carousel/0.1/carousel-events';
-import {ChildLayoutManager} from '../../amp-base-carousel/0.1/child-layout-manager';
-import {Services} from '#service';
+import {Keys_Enum} from '#core/constants/key-codes';
+import {dispatchCustomEvent} from '#core/dom';
+import {isLayoutSizeDefined} from '#core/dom/layout';
 import {
   closestAncestorElementBySelector,
   realChildElements,
 } from '#core/dom/query';
+import {htmlFor} from '#core/dom/static-template';
 import {computedStyle} from '#core/dom/style';
+import {dict} from '#core/types/object';
+
+import {Services} from '#service';
+
+import {triggerAnalyticsEvent} from '#utils/analytics';
 import {createCustomEvent, getDetail, listen} from '#utils/event-helper';
 import {dev, devAssert, userAssert} from '#utils/log';
-import {dict} from '#core/types/object';
-import {dispatchCustomEvent} from '#core/dom';
-import {htmlFor} from '#core/dom/static-template';
-import {isLayoutSizeDefined} from '#core/dom/layout';
-import {triggerAnalyticsEvent} from '#utils/analytics';
+
+import {CSS} from '../../../build/amp-carousel-0.2.css';
+import {ActionSource} from '../../amp-base-carousel/0.1/action-source';
+import {Carousel} from '../../amp-base-carousel/0.1/carousel';
+import {CarouselEvents} from '../../amp-base-carousel/0.1/carousel-events';
+import {ChildLayoutManager} from '../../amp-base-carousel/0.1/child-layout-manager';
 
 /**
  * @enum {string}
@@ -163,8 +167,8 @@ class AmpCarousel extends AMP.BaseElement {
         this.onScrollPositionChanged_();
       }
     );
-    this.prevButton_.addEventListener('click', () => this.interactionPrev());
-    this.nextButton_.addEventListener('click', () => this.interactionNext());
+    this.setupButtonInteraction(this.nextButton_, () => this.interactionNext());
+    this.setupButtonInteraction(this.prevButton_, () => this.interactionPrev());
     this.handlePropagationInViewer_();
 
     const owners = Services.ownersForDoc(element);
@@ -206,6 +210,24 @@ class AmpCarousel extends AMP.BaseElement {
     }
 
     return this.mutateElement(() => {});
+  }
+
+  /**
+   * @param {!HTMLDivElement} button
+   * @param {*} onInteraction
+   */
+  setupButtonInteraction(button, onInteraction) {
+    button.addEventListener('click', onInteraction);
+    button.addEventListener('keydown', (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      if (event.key == Keys_Enum.ENTER || event.key == Keys_Enum.SPACE) {
+        event.preventDefault();
+        onInteraction();
+      }
+    });
   }
 
   /** @override */

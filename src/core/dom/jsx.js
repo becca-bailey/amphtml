@@ -75,11 +75,10 @@ function setAttribute(element, name, value) {
 }
 
 /**
- * @param {string|function(T):Element} tag
- * @param {T} props
+ * @param {string | (function(*): Element)} tag
+ * @param {Object<string, *>} props
  * @param {...*} children
  * @return {Element}
- * @template T
  */
 export function createElement(tag, props, ...children) {
   if (typeof tag !== 'string') {
@@ -107,9 +106,10 @@ export function createElement(tag, props, ...children) {
  * @return {null}
  */
 export function Fragment() {
-  return devAssert(
+  devAssert(
     null,
     "Don't use Fragment (<></>) with #core/dom/jsx. " +
       'Use a root node or an array of nodes instead.'
   );
+  return null;
 }

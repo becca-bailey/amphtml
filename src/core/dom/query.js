@@ -1,5 +1,6 @@
 import {devAssert, devAssertElement} from '#core/assert';
 import * as mode from '#core/mode';
+import {isElement, isString} from '#core/types';
 
 import {isScopeSelectorSupported, prependSelectorsWith} from './css-selectors';
 
@@ -25,12 +26,12 @@ function assertIsName(name) {
  * This method isn't required for modern builds, can be removed.
  * TODO(#37136): This will fail if `root` is a `ShadowRoot`.
  *
- * @param {HTMLElement|ShadowRoot} root
+ * @param {Element|ShadowRoot} root
  * @param {string} selector
  * @return {NodeList}
  */
 function scopedQuerySelectionFallback(root, selector) {
-  const {classList} = /** @type {HTMLElement} */ (root);
+  const {classList} = /** @type {Element} */ (root);
 
   const unique = 'i-amphtml-scoped';
   classList.add(unique);
@@ -43,7 +44,7 @@ function scopedQuerySelectionFallback(root, selector) {
 /**
  * Finds the first element that matches `selector`, scoped inside `root`.
  * Note: in IE, this causes a quick mutation of the element's class list.
- * @param {HTMLElement|ShadowRoot} root
+ * @param {Element|ShadowRoot} root
  * @param {string} selector
  * @return {?HTMLElement}
  *
@@ -262,7 +263,7 @@ export function childNodes(parent, callback) {
 
 /**
  * Finds the first child element that has the specified attribute.
- * @param {HTMLElement|ShadowRoot} parent
+ * @param {Element|ShadowRoot} parent
  * @param {string} attr
  * @return {?Element}
  */
@@ -365,11 +366,11 @@ export function isInternalOrServiceNode(node) {
     return false;
   }
 
-  const el = devAssertElement(node);
+  devAssertElement(node);
   return (
-    el.hasAttribute('placeholder') ||
-    el.hasAttribute('fallback') ||
-    el.hasAttribute('overflow')
+    node.hasAttribute('placeholder') ||
+    node.hasAttribute('fallback') ||
+    node.hasAttribute('overflow')
   );
 }
 
@@ -381,10 +382,10 @@ export function isInternalOrServiceNode(node) {
 function isInternalElement(nodeOrTagName) {
   /** @type {undefined|string} */
   let tagName;
-  if (typeof nodeOrTagName == 'string') {
+  if (isString(nodeOrTagName)) {
     tagName = nodeOrTagName;
-  } else if (nodeOrTagName.nodeType === Node.ELEMENT_NODE) {
-    tagName = devAssertElement(nodeOrTagName).tagName;
+  } else if (isElement(nodeOrTagName)) {
+    tagName = nodeOrTagName.tagName;
   }
 
   return !!tagName && tagName.toLowerCase().startsWith('i-');

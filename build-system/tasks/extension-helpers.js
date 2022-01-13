@@ -4,7 +4,7 @@ const debounce = require('../common/debounce');
 const dedent = require('dedent');
 const fastGlob = require('fast-glob');
 const fs = require('fs-extra');
-const legacyLatestVersions = require('../compile/bundles.legacy-latest-versions');
+const json5 = require('json5');
 const path = require('path');
 const wrappers = require('../compile/compile-wrappers');
 const {
@@ -38,6 +38,13 @@ const {parse: pathParse} = require('path');
 const {renameSelectorsToBentoTagNames} = require('./css/bento-css');
 const {TransformCache, batchedRead} = require('../common/transform-cache');
 const {watch} = require('chokidar');
+
+const legacyLatestVersions = json5.parse(
+  fs.readFileSync(
+    require.resolve('../compile/bundles.legacy-latest-versions.jsonc'),
+    'utf8'
+  )
+);
 
 /**
  * Extensions to build when `--extensions=inabox`.
@@ -481,19 +488,19 @@ async function buildNpmCss(extDir, options) {
   endBuildStep('Wrote CSS', `${options.name} → styles.css`, startCssTime);
 }
 
-/** @type {TransformCache} */
+/** @type {TransformCache<string>} */
 let jssCache;
 
 /**
  * Returns the minified CSS for a .jss.js file.
  *
  * @param {string} jssFile
- * @return {Promise<string|Buffer>}
+ * @return {Promise<string>}
  */
 async function getCssForJssFile(jssFile) {
   // Lazily instantiate the TransformCache
   if (!jssCache) {
-    jssCache = new TransformCache('.jss-cache', '.css');
+    jssCache = new TransformCache('.jss-cache');
   }
 
   const {contents, hash} = await batchedRead(jssFile);
