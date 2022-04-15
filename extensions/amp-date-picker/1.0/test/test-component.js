@@ -1064,6 +1064,31 @@ describes.sandboxed('BentoDatePicker preact component v1.0', {}, (env) => {
     });
   });
 
+  describe('templates', () => {
+    it('renders a date template', () => {
+      const rrule = new RRule({
+        freq: RRule.WEEKLY,
+        byweekday: RRule.TU,
+        dtstart: new Date(2022, 0),
+      });
+      const wrapper = mount(
+        <DatePicker
+          type="single"
+          initialVisibleMonth={new Date(2022, 0)}
+          dateTemplates={[
+            {
+              dates: rrule.toString(),
+              template: () => <span data-testid="tacos">🌮</span>,
+            },
+          ]}
+        />
+      );
+
+      const datesWithTemplate = wrapper.find('[data-testid="tacos"]');
+      expect(datesWithTemplate).to.have.length(4);
+    });
+  });
+
   describe('imperative api', () => {
     let ref;
     let wrapper;

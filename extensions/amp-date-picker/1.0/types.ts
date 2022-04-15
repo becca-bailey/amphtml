@@ -1,6 +1,6 @@
 import {Locale} from 'date-fns';
 
-import {ComponentChildren} from '#preact/types';
+import {ComponentChildren, VNode} from '#preact/types';
 
 export type DateSelector = Array<Date | string>;
 export type DatePickerMode = 'static' | 'overlay';
@@ -17,8 +17,14 @@ export type Range = {
   end: Date;
 };
 
+export type DateTemplate = {
+  dates: DateSelector;
+  template: (date: Date) => VNode;
+};
+
 interface CommonDatePickerProps {
   blocked?: DateSelector;
+  dateTemplates?: DateTemplate[];
   format?: string;
   highlighted?: DateSelector;
   id?: string;
