@@ -1077,7 +1077,7 @@ describes.sandboxed('BentoDatePicker preact component v1.0', {}, (env) => {
           initialVisibleMonth={new Date(2022, 0)}
           dateTemplates={[
             {
-              dates: rrule.toString(),
+              dates: [rrule.toString()],
               template: () => <span data-testid="tacos">🌮</span>,
             },
           ]}
@@ -1085,7 +1085,7 @@ describes.sandboxed('BentoDatePicker preact component v1.0', {}, (env) => {
       );
 
       const datesWithTemplate = wrapper.find('[data-testid="tacos"]');
-      expect(datesWithTemplate).to.have.length(4);
+      expect(datesWithTemplate).to.have.length(5);
     });
   });
 

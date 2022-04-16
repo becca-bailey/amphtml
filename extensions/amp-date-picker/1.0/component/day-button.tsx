@@ -9,7 +9,14 @@ export function DayButton({date, displayMonth}: DayProps) {
   const buttonRef = useRef();
 
   const {buttonProps} = useDayRender(date, displayMonth, buttonRef);
-  const {getLabel, isDisabled, isHighlighted} = useDatePickerContext();
+  const {getLabel, getTemplate, isDisabled, isHighlighted} =
+    useDatePickerContext();
+
+  const template = getTemplate(date);
+
+  if (typeof template === 'function') {
+    return template(date);
+  }
 
   return (
     <Button

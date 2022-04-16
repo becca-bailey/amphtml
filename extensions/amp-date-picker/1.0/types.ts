@@ -17,9 +17,11 @@ export type Range = {
   end: Date;
 };
 
+export type TemplateFn = (date: Date) => VNode;
+
 export type DateTemplate = {
   dates: DateSelector;
-  template: (date: Date) => VNode;
+  template: TemplateFn;
 };
 
 interface CommonDatePickerProps {

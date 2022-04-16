@@ -17,7 +17,7 @@ import {
 } from '../constants';
 import {getCurrentDate, getFormattedDate} from '../date-helpers';
 import {parseDate as _parseDate} from '../parsers';
-import {BentoDatePickerProps, DatePickerMode} from '../types';
+import {BentoDatePickerProps, DatePickerMode, TemplateFn} from '../types';
 
 interface DatePickerHelperFunctions {
   getLabel(date: Date): string;
@@ -31,6 +31,7 @@ interface DatePickerHelperFunctions {
   formatDate(date: Date): string;
   formatMonth(date: Date): string;
   formatWeekday(date: Date): string;
+  getTemplate(date: Date): TemplateFn | null;
 }
 
 // Since we are providing defualts, this adds type safety for the single and range components
@@ -73,6 +74,7 @@ export function DatePickerProvider({
   min: optionalMin,
   blocked,
   highlighted,
+  dateTemplates = [],
   ...rest
 }: BentoDatePickerProps) {
   const min = optionalMin || today;
@@ -180,6 +182,20 @@ export function DatePickerProvider({
     [isDisabled, locale]
   );
 
+  const getTemplate = useCallback(
+    (date: Date) => {
+      const value = dateTemplates.find(({dates}) => {
+        const dateList = new DatesList(dates);
+        return dateList.contains(date);
+      });
+      if (value) {
+        return value.template;
+      }
+      return null;
+    },
+    [dateTemplates]
+  );
+
   return (
     <DatePickerContext.Provider
       value={{
@@ -198,6 +214,7 @@ export function DatePickerProvider({
         formatDate,
         formatMonth,
         formatWeekday,
+        getTemplate,
         numberOfMonths,
         mode,
         onError,

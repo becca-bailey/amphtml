@@ -4,7 +4,7 @@ import {PreactBaseElement} from '#preact/base-element';
 
 import {BentoDatePicker} from './component';
 import {CSS as COMPONENT_CSS} from './component.jss';
-import {parseDate, parseDateList, parseLocale, parseNumber} from './parsers';
+import {parseDate, parseDateList, parseLocale} from './parsers';
 
 export class BaseElement extends PreactBaseElement {}
 
@@ -24,13 +24,13 @@ BaseElement['props'] = {
   'blocked': {attr: 'blocked', parseAttr: parseDateList},
   'children': {passthrough: true},
   // Not implemented
-  'daySize': {attr: 'day-size', parseAttr: parseNumber},
+  'daySize': {attr: 'day-size', type: 'number'},
   'endInputSelector': {attr: 'end-input-selector'},
   // Not implemented
-  'firstDayOfWeek': {attr: 'first-day-of-week', parseAttr: parseNumber},
+  'firstDayOfWeek': {attr: 'first-day-of-week', type: 'number'},
   'format': {attr: 'format'},
   // Not implemented
-  'fullscreen': {attr: 'fullscreen', parseAttr: parseBooleanAttribute},
+  'fullscreen': {attr: 'fullscreen', type: 'boolean'},
   // Not implemented
   'hideKeyboardShortcutsPanel': {
     attr: 'hide-keyboard-shortcuts-panel',
@@ -41,19 +41,19 @@ BaseElement['props'] = {
   'inputSelector': {attr: 'input-selector'},
   'locale': {attr: 'locale', parseAttr: parseLocale},
   'max': {attr: 'max', parseAttr: parseDate},
-  'maximumNights': {attr: 'maximum-nights', parseAttr: parseNumber},
+  'maximumNights': {attr: 'maximum-nights', type: 'number'},
   'min': {attr: 'min', parseAttr: parseDate},
-  'minimumNights': {attr: 'minimum-nights', parseAttr: parseNumber},
+  'minimumNights': {attr: 'minimum-nights', type: 'number'},
   'mode': {attr: 'mode'},
   'monthFormat': {attr: 'month-format'},
-  'numberOfMonths': {attr: 'number-of-months', parseAttr: parseNumber},
+  'numberOfMonths': {attr: 'number-of-months', type: 'number'},
   'openAfterClear': {
     attr: 'open-after-clear',
-    parseAttr: parseBooleanAttribute,
+    type: 'boolean',
   },
   'openAfterSelect': {
     attr: 'open-after-select',
-    parseAttr: parseBooleanAttribute,
+    type: 'boolean',
   },
   'startInputSelector': {attr: 'start-input-selector'},
   'today': {attr: 'today', parseAttr: parseDate},

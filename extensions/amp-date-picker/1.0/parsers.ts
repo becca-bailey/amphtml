@@ -212,7 +212,3 @@ export function parseDateList(list: string) {
     return value;
   });
 }
-
-export function parseNumber(n: string) {
-  return parseInt(n, 10);
-}
